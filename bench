@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+benchmark=$1
+cwd=${PWD}
+
+trap 'cd "$cwd"' EXIT
+
+cd "$cwd/benchmark"
+node parser_runner.js
+node stringify_runner.js
+exit 0

@@ -1,0 +1,6 @@
+node_modules/*
+deque.sublime-workspace
+deque.sublime-project
+npm-debug.log
+nodex64.exe
+throwaway.js
