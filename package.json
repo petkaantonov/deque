@@ -1,5 +1,5 @@
 {
-  "name": "Deque",
+  "name": "double-ended-queue",
   "description": "Extremely fast double-ended queue implementation",
   "version": "0.9.7",
   "keywords": [
