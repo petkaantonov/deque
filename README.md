@@ -5,7 +5,7 @@ Extremely fast [double-ended queue](http://en.wikipedia.org/wiki/Double-ended_qu
 - [Stack](http://en.wikipedia.org/wiki/Stack_\(abstract_data_type\))
 - [Queue](http://en.wikipedia.org/wiki/Queue_\(data_structure\))
 
-The implementation is GC and CPU cache friendly [circular buffer](http://en.wikipedia.org/wiki/Circular_buffer). It will run circles around any "linked list" implementation.
+The implementation is GC and CPU cache friendly [circular buffer](http://en.wikipedia.org/wiki/Circular_buffer). [It will run circles around any "linked list" implementation](#performance).
 
 Every queue operation is done in constant `O(1)` - including random access from `.get()`.
 
@@ -15,6 +15,7 @@ Every queue operation is done in constant `O(1)` - including random access from 
 - [Why not use an Array?](#why-not-use-an-array)
 - [Using double-ended queue as a normal queue](#using-double-ended-queue-as-a-normal-queue)
 - [API reference and examples](#api)
+- [Performance](#performance)
 
 #Quick start
 
@@ -275,3 +276,18 @@ deque.toString(); //""
 
 #Performance
 
+Clone the repo and `npm install`. Then run the `bench` script.
+
+##1000 items in the queue
+
+    double-ended-queue x 15,532,714 ops/sec ±0.19% (96 runs sampled)
+    built-in array x 6,501,398 ops/sec ±0.87% (95 runs sampled)
+    node-deque x 2,938,068 ops/sec ±3.50% (68 runs sampled)
+
+##2 million items in the queue
+
+    double-ended-queue x 14,425,547 ops/sec ±0.17% (94 runs sampled)
+    node-deque x 2,815,628 ops/sec ±10.56% (76 runs sampled)
+    built-in array x 19.23 ops/sec ±0.35% (51 runs sampled)
+
+Noteworthy is just how bad the degradation can be for built-in array when V8 cannot use the trick.

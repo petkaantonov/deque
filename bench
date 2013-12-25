@@ -5,6 +5,6 @@ cwd=${PWD}
 trap 'cd "$cwd"' EXIT
 
 cd "$cwd/benchmark"
-node parser_runner.js
-node stringify_runner.js
+node thousand.js
+node two_million.js
 exit 0
