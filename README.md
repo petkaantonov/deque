@@ -1,6 +1,3 @@
-
-https://code.google.com/p/v8/issues/detail?id=3059
-
 #Introduction
 
 Extremely fast [double-ended queue](http://en.wikipedia.org/wiki/Double-ended_queue) implementation. Double-ended queue can also be used as a:
@@ -63,7 +60,7 @@ Queue is a more commonly needed data structure however a separate implementation
 
 #####`new Deque()` -> `Deque`
 
-Creates an empty double-ended queue with initial capacity of 16. If you know the optimal size before-hand, use [].
+Creates an empty double-ended queue with initial capacity of 16. If you know the optimal size before-hand, use [`new Deque(int capacity)`](#new-dequeint-capacity---deque).
 
 ```js
 var deque = new Deque();
@@ -76,7 +73,7 @@ deque.pop(); //3
 
 #####`new Deque(Array items)` -> `Deque`
 
-Creates a double-ended queue from the `items`.
+Creates a double-ended queue from `items`.
 
 ```js
 var deque = new Deque([1,2,3,4]);
