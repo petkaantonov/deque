@@ -401,3 +401,37 @@ describe('Deque.prototype.clear', function () {
         assert(a.isEmpty());
     });
 });
+
+describe('Deque resizing', function () {
+    function times(x, value) {
+        var a = [];
+        for (var i = 0; i < x; ++i) {
+            a.push(value === "index" ? i : value);
+        }
+        return a;
+    }
+    specify("Resize requires movement", function() {
+        var a = new Deque(16);
+        a[0] = 4;
+        a[1] = 5;
+        a[14] = 2;
+        a[15] = 3;
+        a._length = 16;
+        a._front = 14;
+        assert.equal(a.peekFront(), 2);
+        assert.equal(a.get(3), 5);
+        assert.equal(a._capacity, 16);
+        assert.deepEqual(a.toArray(), [2,3,4,5].concat(times(12)));
+        a.push(6);
+        assert.notEqual(a._capacity, 16);
+        a.unshift(1);
+        assert.deepEqual(a.toArray(), [1,2,3,4,5].concat(times(12), 6));
+    });
+    specify("Resize doesn't require movement", function() {
+        var original = times(16, "index");
+        var a = new Deque(original);
+        a.push(17);
+        a.unshift(-1);
+        assert.deepEqual(a.toArray(), [-1].concat(original, 17));
+    });
+});

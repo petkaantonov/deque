@@ -24,7 +24,6 @@ function Deque(capacity) {
     this._capacity = getCapacity(capacity);
     this._length = 0;
     this._front = 0;
-    this._makeCapacity();
     if (isArray(capacity)) {
         var len = capacity.length;
         for (var i = 0; i < len; ++i) {
@@ -188,9 +187,14 @@ Deque.prototype.isEmpty = function Deque$isEmpty() {
 };
 
 Deque.prototype.clear = function Deque$clear() {
+    var len = this._length;
+    var front = this._front;
+    var capacity = this._capacity;
+    for (var j = 0; j < len; ++j) {
+        this[(front + j) & (capacity - 1)] = void 0;
+    }
     this._length = 0;
     this._front = 0;
-    this._makeCapacity();
 };
 
 Deque.prototype.toString = function Deque$toString() {
@@ -215,13 +219,6 @@ Object.defineProperty(Deque.prototype, "length", {
     }
 });
 
-Deque.prototype._makeCapacity = function Deque$_makeCapacity() {
-    var len = this._capacity;
-    for (var i = 0; i < len; ++i) {
-        this[i] = void 0;
-    }
-};
-
 Deque.prototype._checkCapacity = function Deque$_checkCapacity(size) {
     if (this._capacity < size) {
         this._resizeTo(getCapacity(this._capacity * 1.5 + 16));
@@ -229,32 +226,23 @@ Deque.prototype._checkCapacity = function Deque$_checkCapacity(size) {
 };
 
 Deque.prototype._resizeTo = function Deque$_resizeTo(capacity) {
-    var oldFront = this._front;
     var oldCapacity = this._capacity;
-    var oldDeque = new Array(oldCapacity);
-    var length = this._length;
-
-    arrayCopy(this, 0, oldDeque, 0, oldCapacity);
     this._capacity = capacity;
-    this._makeCapacity();
-    this._front = 0;
-    if (oldFront + length <= oldCapacity) {
-        arrayCopy(oldDeque, oldFront, this, 0, length);
-    } else {        var lengthBeforeWrapping =
-            length - ((oldFront + length) & (oldCapacity - 1));
-
-        arrayCopy(oldDeque, oldFront, this, 0, lengthBeforeWrapping);
-        arrayCopy(oldDeque, 0, this, lengthBeforeWrapping,
-            length - lengthBeforeWrapping);
+    var front = this._front;
+    var length = this._length;
+    if (front + length > oldCapacity) {
+        var moveItemsCount = (front + length) & (oldCapacity - 1);
+        arrayMove(this, 0, this, oldCapacity, moveItemsCount);
     }
 };
 
 
 var isArray = Array.isArray;
 
-function arrayCopy(src, srcIndex, dst, dstIndex, len) {
+function arrayMove(src, srcIndex, dst, dstIndex, len) {
     for (var j = 0; j < len; ++j) {
         dst[j + dstIndex] = src[j + srcIndex];
+        src[j + srcIndex] = void 0;
     }
 }
 
