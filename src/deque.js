@@ -198,6 +198,53 @@ Object.defineProperty(Deque.prototype, "length", {
     }
 });
 
+function makeIterator(valueFn) {
+    return function Deque$iteratorWrapper() {
+        /* jshint ignore:start */
+        if (typeof Symbol === "undefined"
+            || typeof Symbol.iterator === "undefined") {
+            throw new Error("Iterators are not supported");
+        }
+        /* jshint ignore:end */
+
+        var self = this;
+        var iterator = {};
+
+        function Deque$iterator() {
+            return {
+                index: 0,
+                next: function() {
+                    if (this.index >= self._length) {
+                        return {done: true};
+                    }
+                    var result = {
+                        done: false,
+                        value: valueFn(this.index, self)
+                    };
+                    ++this.index;
+                    return result;
+                }
+            };
+        }
+
+        iterator[Symbol.iterator] = Deque$iterator; // jshint ignore:line
+
+        return iterator;
+    };
+}
+
+Deque.prototype.entries = makeIterator(function(index, self) {
+    return [index, self.get(index)];
+});
+
+Deque.prototype.keys = makeIterator(function(index) {
+    return index;
+});
+
+Deque.prototype.values = makeIterator(function(index, self) {
+    return self.get(index);
+});
+
 Deque.prototype._checkCapacity = function Deque$_checkCapacity(size) {
     if (this._capacity < size) {
         this._resizeTo(getCapacity(this._capacity * 1.5 + 16));

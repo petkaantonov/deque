@@ -402,6 +402,117 @@ describe('Deque.prototype.clear', function () {
     });
 });
 
+var describeIterator = (typeof Symbol !== "undefined" && typeof Symbol.iterator !== "undefined") ? describe : describe.skip;
+
+describeIterator("Deque.prototype.entries", function() {
+    it("Should iterate entries", function() {
+        var initArray = [undefined, {a: 1}, [2], undefined, null, false, true, undefined];
+        var queue = new Deque(initArray);
+        assert.equal(queue.length, initArray.length);
+
+        var length = queue.length;
+        var iterator = queue.entries()[Symbol.iterator]();
+        var count = 0;
+        var entry;
+
+
+        while (!(entry = iterator.next()).done) {
+            assert.deepEqual(entry.value, [count, initArray[count]]);
+            ++count;
+        }
+
+        assert.equal(count, length);
+        assert.equal(queue.length, length);
+    });
+    it("Should not iterate empty queue", function() {
+        var queue = new Deque();
+        var iterator = queue.entries()[Symbol.iterator]();
+        while (!(entry = iterator.next()).done) {
+            assert(false, "Unexpected iteration of empty queue");
+        }
+    });
+    it("Should throw an error if iterators are unsupported", function() {
+          var s = Symbol;
+          Symbol = undefined;
+          assert.throws(function() {
+              new Deque().entries()
+          }, /Iterators are not supported/);
+          Symbol = s
+    });
+});
+
+describeIterator("Deque.prototype.values", function() {
+    it("Should iterate values", function() {
+        var initArray = [undefined, {a: 1}, [2], undefined, null, false, true, undefined];
+        var queue = new Deque(initArray);
+        assert.equal(queue.length, initArray.length);
+
+        var length = queue.length;
+        var iterator = queue.values()[Symbol.iterator]();
+        var count = 0;
+        var entry;
+
+        while (!(entry = iterator.next()).done) {
+            assert.deepEqual(entry.value, initArray[count]);
+            ++count;
+        }
+
+        assert.equal(count, length);
+        assert.equal(queue.length, length);
+    });
+    it("Should not iterate empty queue", function() {
+        var queue = new Deque();
+        var iterator = queue.values()[Symbol.iterator]();
+        while (!(entry = iterator.next()).done) {
+            assert(false, "Unexpected iteration of empty queue");
+        }
+    });
+    it("Should throw an error if iterators are unsupported", function() {
+          var s = Symbol;
+          Symbol = undefined;
+          assert.throws(function() {
+              new Deque().values()
+          }, /Iterators are not supported/);
+          Symbol = s
+    });
+});
+
+describeIterator("Deque.prototype.keys", function() {
+    it("Should iterate keys", function() {
+        var initArray = [undefined, {a: 1}, [2], undefined, null, false, true, undefined];
+        var queue = new Deque(initArray);
+        assert.equal(queue.length, initArray.length);
+
+        var length = queue.length;
+        var iterator = queue.keys()[Symbol.iterator]();
+        var count = 0;
+        var entry;
+
+        while (!(entry = iterator.next()).done) {
+            assert.equal(entry.value, count);
+            ++count;
+        }
+
+        assert.equal(count, length);
+        assert.equal(queue.length, length);
+    });
+    it("Should not iterate empty queue", function() {
+        var queue = new Deque();
+        var iterator = queue.keys()[Symbol.iterator]();
+        while (!(entry = iterator.next()).done) {
+            assert(false, "Unexpected iteration of empty queue");
+        }
+    });
+    it("Should throw an error if iterators are unsupported", function() {
+          var s = Symbol;
+          Symbol = undefined;
+          assert.throws(function() {
+              new Deque().keys()
+          }, /Iterators are not supported/);
+          Symbol = s
+    });
+});
+
 describe('Deque resizing', function () {
     function times(x, value) {
         var a = [];
@@ -435,3 +546,4 @@ describe('Deque resizing', function () {
         assert.deepEqual(a.toArray(), [-1].concat(original, 17));
     });
 });
+
