@@ -1,7 +1,7 @@
 {
     "name": "double-ended-queue",
     "description": "Extremely fast double-ended queue implementation",
-    "version": "2.1.0-0",
+    "version": "2.1.0",
     "keywords": [
         "data-structure",
         "data-structures",
