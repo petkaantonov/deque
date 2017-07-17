@@ -161,6 +161,21 @@ Deque.prototype.get = function Deque$get(index) {
     return this[(this._front + i) & (this._capacity - 1)];
 };
 
+Deque.prototype.set = function Deque$set(index, value) {
+    var i = index;
+    if ((i !== (i | 0))) {
+        throw new RangeError('Index '+i+' is invalid');
+    }
+    var len = this._length;
+    if (i < 0) {
+        i = i + len;
+    }
+    if (i < 0 || i >= len) {
+        throw new RangeError('Index '+i+' is out of bounds');
+    }
+    this[(this._front + i) & (this._capacity - 1)] = value;
+};
+
 Deque.prototype.isEmpty = function Deque$isEmpty() {
     return this._length === 0;
 };
