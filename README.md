@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 
 Extremely fast [double-ended queue](http://en.wikipedia.org/wiki/Double-ended_queue) implementation. Double-ended queue can also be used as a:
 
@@ -9,7 +9,7 @@ The implementation is GC and CPU cache friendly [circular buffer](http://en.wiki
 
 Every queue operation is done in constant `O(1)` - including random access from `.get()`.
 
-#Topics
+# Topics
 
 - [Quick start](#quick-start)
 - [Why not use an Array?](#why-not-use-an-array)
@@ -17,7 +17,7 @@ Every queue operation is done in constant `O(1)` - including random access from 
 - [API reference and examples](#api)
 - [Performance](#performance)
 
-#Quick start
+# Quick start
 
     npm install double-ended-queue
 
@@ -29,7 +29,7 @@ deque.shift(); //1
 deque.pop(); //4
 ```
 
-#Why not use an Array?
+# Why not use an Array?
 
 Arrays take linear `O(N)` time to do `shift` and `unshift` operations. That means in theory that an array with 1000 items is 1000x slower to do those operations than a deque with 1000 items. 10000x slower with 10000 items and so on.
 
@@ -39,11 +39,11 @@ But arrays use "native" methods, they must be faster!
 
 In V8, there is almost no advantage for a method to be a built-in. In fact many times built-ins are at a severe disadvantage of having to implement far more complex semantics than is actually needed in practice. For example, sparse array handling punishes almost every built-in array method even though nobody uses sparse arrays as is evidenced by the popularity of the underscore library which doesn't handle sparse arrays in the same way across different browsers.
 
-#Using double-ended queue as a normal queue
+# Using double-ended queue as a normal queue
 
 Queue is a more commonly needed data structure however a separate implementation does not provide any advantage in terms of performance. Aliases are provided specifically for the queue use-case. You may use `.enqueue(items...)` to enqueue item(s) and `.dequeue()` to dequeue an item.
 
-#API
+# API
 
 - [`new Deque()`](#new-deque---deque)
 - [`new Deque(Array items)`](#new-dequearray-items---deque)
@@ -59,7 +59,7 @@ Queue is a more commonly needed data structure however a separate implementation
 - [`isEmpty()`](#isempty---boolean)
 - [`clear()`](#clear---void)
 
-#####`new Deque()` -> `Deque`
+##### `new Deque()` -> `Deque`
 
 Creates an empty double-ended queue with initial capacity of 16. If you know the optimal size before-hand, use [`new Deque(int capacity)`](#new-dequeint-capacity---deque).
 
@@ -72,7 +72,7 @@ deque.pop(); //3
 
 <hr>
 
-#####`new Deque(Array items)` -> `Deque`
+##### `new Deque(Array items)` -> `Deque`
 
 Creates a double-ended queue from `items`.
 
@@ -84,7 +84,7 @@ deque.pop(); //4
 
 <hr>
 
-#####`new Deque(int capacity)` -> `Deque`
+##### `new Deque(int capacity)` -> `Deque`
 
 Creates an empty double-ended queue with the given `capacity`. `Capacity` should be the maximum amount of items the queue will hold at a given time.
 
@@ -99,7 +99,7 @@ deque.pop(); //3
 
 <hr>
 
-#####`push(dynamic items...)` -> `int`
+##### `push(dynamic items...)` -> `int`
 
 Push items to the back of this queue. Returns the amount of items currently in the queue after the operation.
 
@@ -117,7 +117,7 @@ deque.shift(); //3
 
 <hr>
 
-#####`unshift(dynamic items...)` -> `int`
+##### `unshift(dynamic items...)` -> `int`
 
 Unshift items to the front of this queue. Returns the amount of items currently in the queue after the operation.
 
@@ -134,7 +134,7 @@ deque.toString(); //"-2,-1,0,1,2,3"
 <hr>
 
 
-#####`pop()` -> `dynamic`
+##### `pop()` -> `dynamic`
 
 Pop off the item at the back of this queue.
 
@@ -155,7 +155,7 @@ deque.pop(); //undefined
 
 <hr>
 
-#####`shift()` -> `dynamic`
+##### `shift()` -> `dynamic`
 
 Shifts off the item at the front of this queue.
 
@@ -176,7 +176,7 @@ deque.shift(); //undefined
 
 <hr>
 
-#####`toArray()` -> `Array`
+##### `toArray()` -> `Array`
 
 Returns the items in the queue as an array. Starting from the item in the front of the queue and ending to the item at the back of the queue.
 
@@ -191,7 +191,7 @@ deque.toArray(); //[0,1,2,3,4]
 
 <hr>
 
-#####`peekBack()` -> `dynamic`
+##### `peekBack()` -> `dynamic`
 
 Returns the item that is at the back of this queue without removing it.
 
@@ -205,7 +205,7 @@ deque.peekBack(); //4
 
 <hr>
 
-#####`peekFront()` -> `dynamic`
+##### `peekFront()` -> `dynamic`
 
 Returns the item that is at the front of this queue without removing it.
 
@@ -219,7 +219,7 @@ deque.peekFront(); //1
 
 <hr>
 
-#####`get(int index)` -> `dynamic`
+##### `get(int index)` -> `dynamic`
 
 Returns the item that is at the given `index` of this queue without removing it.
 
@@ -249,7 +249,7 @@ of the deque object are internally used as an optimization and have no meaningfu
 
 <hr>
 
-#####`isEmpty()` -> `boolean`
+##### `isEmpty()` -> `boolean`
 
 Return `true` if this queue is empty, `false` otherwise.
 
@@ -262,7 +262,7 @@ deque.isEmpty(); //false
 
 <hr>
 
-#####`clear()` -> `void`
+##### `clear()` -> `void`
 
 Remove all items from this queue. Does not change the queue's capacity.
 
@@ -274,17 +274,17 @@ deque.toString(); //""
 ```
 <hr>
 
-#Performance
+# Performance
 
 Clone the repo and `npm install`. Then run the `bench` script.
 
-##1000 items in the queue
+## 1000 items in the queue
 
     double-ended-queue x 15,532,714 ops/sec ±0.19% (96 runs sampled)
     built-in array x 6,501,398 ops/sec ±0.87% (95 runs sampled)
     node-deque x 2,938,068 ops/sec ±3.50% (68 runs sampled)
 
-##2 million items in the queue
+## 2 million items in the queue
 
     double-ended-queue x 14,425,547 ops/sec ±0.17% (94 runs sampled)
     node-deque x 2,815,628 ops/sec ±10.56% (76 runs sampled)
